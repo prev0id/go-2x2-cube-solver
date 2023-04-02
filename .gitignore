@@ -1,0 +1,12 @@
+.idea
+.git
+build/bin
+web/app.wasm
+
+
+*.pixil
+*.txt
+cmd/main.go
+*.html
+*.js
+*.css
