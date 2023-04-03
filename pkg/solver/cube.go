@@ -9,8 +9,12 @@ type Cube struct {
 	stickers [24]Sticker
 }
 
-func (c *Cube) New() {
-	c.stickers = SolvedStickers[0]
+func New() Cube {
+	stickers := [24]Sticker{}
+	for idx, _ := range stickers {
+		stickers[idx] = 255
+	}
+	return Cube{stickers: stickers}
 }
 
 func (c *Cube) SetStickers(newStickers [24]Sticker) {

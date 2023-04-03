@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en"></html>
+    <head>
+        <meta charset="utf-8:" />
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <link rel="stylesheet", href="style.css" />
+    </head>
+    <body>
+        <div id="title">
+            <h1>2x2x2 Rubic's cube solver</h1>
+        </div>
+
+        <div class="app-grid">
+            <div class="cube-box" id="cube-box">
+                <div class="cube" id="cube">
+                    <div class="cube-face face-U">
+                        <div><button id="sticker-0" class="sticker"></button></div>
+                        <div><button id="sticker-1" class="sticker"></button></div>
+                        <div><button id="sticker-2" class="sticker"></button></div>
+                        <div><button id="sticker-3" class="sticker"></button></div>
+                    </div>
+                
+                    <div class="cube-face face-L">
+                        <div><button id="sticker-4" class="sticker"></button></div>
+                        <div><button id="sticker-5" class="sticker"></button></div>
+                        <div><button id="sticker-6" class="sticker"></button></div>
+                        <div><button id="sticker-7" class="sticker"></button></div>
+                    </div>
+                
+                
+                    <div class="cube-face face-F">
+                        <div><button id="sticker-8" class="sticker"></button></div>
+                        <div><button id="sticker-9" class="sticker"></button></div>
+                        <div><button id="sticker-10" class="sticker"></button></div>
+                        <div><button id="sticker-11" class="sticker"></button></div>
+                    </div>
+                
+                
+                    <div class="cube-face face-R">
+                        <div><button id="sticker-12" class="sticker"></button></div>
+                        <div><button id="sticker-13" class="sticker"></button></div>
+                        <div><button id="sticker-14" class="sticker"></button></div>
+                        <div><button id="sticker-15" class="sticker"></button></div>
+                    </div>
+                    
+                
+                    <div class="cube-face face-B">
+                        <div><button id="sticker-16" class="sticker"></button></div>
+                        <div><button id="sticker-17" class="sticker"></button></div>
+                        <div><button id="sticker-18" class="sticker"></button></div>
+                        <div><button id="sticker-19" class="sticker"></button></div>
+                    </div>
+                
+                    <div class="cube-face face-D">
+                        <div><button id="sticker-20" class="sticker"></button></div>
+                        <div><button id="sticker-21" class="sticker"></button></div>
+                        <div><button id="sticker-22" class="sticker"></button></div>
+                        <div><button id="sticker-23" class="sticker"></button></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="color-buttons">
+                <fieldset class="selection-buttons-fieldset">
+                    <legend>CHOOSE COLOR TO FILL CUBE</legend>
+                    <div class="radio-grid">
+                        <input type="radio" id="button-yellow" class="color-selection" name="colorSelection" value="Yellow" checked>
+                        <input type="radio" id="button-blue" class="color-selection" name="colorSelection" value="Blue">
+                        <input type="radio" id="button-red" class="color-selection" name="colorSelection" value="Red">
+                        <input type="radio" id="button-green" class="color-selection" name="colorSelection" value="Green">
+                        <input type="radio" id="button-orange" class="color-selection" name="colorSelection" value="Orange">
+                        <input type="radio" id="button-white" class="color-selection" name="colorSelection" value="White">
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="solution">
+                <!-- <fieldset> -->
+                <label id="solution-label">SOLUTION</label>
+                <p>Here will be your solution.</p>
+        
+                <!-- </fieldset> -->
+            </div>
+
+            <div class="solve-me-button">
+                <button id="solve-me-button">PRESS TO SOLVE</button>
+            </div>
+
+            <div class="credits">
+                <div class="logo-text">
+                    <img src="../../assets/github.png" id="github-logo">
+                    <a href="https://github.com/prev0id/go-2x2-cube-solver" target="_blank">Github page</a>
+                </div>
+                <div class="logo-text">
+                    <img src="../../assets/telegram.png" id="telegram-logo">
+                    <a href="https://t.me/prevoid" target="_blank">Contact me</a>
+                </div>
+            </div>
+        </div>
+        <script src="script.js"></script>
+    </body>
+</html>

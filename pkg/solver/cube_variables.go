@@ -15,7 +15,7 @@ const (
 type Sticker uint8
 
 const (
-	StickerWhite = iota
+	StickerWhite Sticker = iota
 	StickerGreen
 	StickerRed
 	StickerBlue
