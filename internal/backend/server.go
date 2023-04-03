@@ -21,9 +21,11 @@ func Handler(server Server) http.HandlerFunc {
 }
 
 func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
-
+	log.Println("POST request")
 }
 
 func (s *Server) Read(writer http.ResponseWriter, request *http.Request) {
-	http.ServeFile(writer, request, "internal/frontend/index.html")
+	log.Println("Get shit")
+	//http.StripPrefix()
+	http.ServeFile(writer, request, "./internal/frontend/index.html")
 }
