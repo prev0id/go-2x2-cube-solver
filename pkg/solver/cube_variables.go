@@ -12,7 +12,7 @@ const (
 	MoveFPrime = "F'"
 )
 
-type Sticker uint8
+type Sticker int
 
 const (
 	StickerWhite Sticker = iota
@@ -23,18 +23,7 @@ const (
 	StickerYellow
 )
 
-var (
-	cubeMoves = map[string][24]int{
-		MoveR:      RMoveIndexes,
-		MoveR2:     R2MoveIndexes,
-		MoveRPrime: RPrimeMoveIndexes,
-		MoveU:      UMoveIndexes,
-		MoveU2:     U2MoveIndexes,
-		MoveUPrime: UPrimeMoveIndexes,
-		MoveF:      FMoveIndexes,
-		MoveF2:     F2MoveIndexes,
-		MoveFPrime: FPrimeMoveIndexes}
-)
+var ()
 
 var (
 	RMoveIndexes      = [24]int{0, 9, 2, 11, 4, 5, 6, 7, 8, 21, 10, 23, 14, 12, 15, 13, 3, 17, 1, 19, 20, 18, 22, 16}

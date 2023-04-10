@@ -2,7 +2,7 @@
 .git
 build/bin
 web/app.wasm
-
+3x3
 
 *.pixil
 *.txt

@@ -12,28 +12,6 @@ const (
 
 var (
 	ErrInvalidCube = errors.New("unsolvable cube")
-
-	forwardMoves = map[string][24]int{
-		MoveR:      RMoveIndexes,
-		MoveR2:     R2MoveIndexes,
-		MoveRPrime: RPrimeMoveIndexes,
-		MoveU:      UMoveIndexes,
-		MoveU2:     U2MoveIndexes,
-		MoveUPrime: UPrimeMoveIndexes,
-		MoveF:      FMoveIndexes,
-		MoveF2:     F2MoveIndexes,
-		MoveFPrime: FPrimeMoveIndexes}
-
-	backwardMoves = map[string][24]int{
-		MoveR:      RPrimeMoveIndexes,
-		MoveR2:     R2MoveIndexes,
-		MoveRPrime: RMoveIndexes,
-		MoveU:      UPrimeMoveIndexes,
-		MoveU2:     U2MoveIndexes,
-		MoveUPrime: UMoveIndexes,
-		MoveF:      FPrimeMoveIndexes,
-		MoveF2:     F2MoveIndexes,
-		MoveFPrime: FMoveIndexes}
 )
 
 type queueValue struct {
@@ -90,6 +68,17 @@ func (s *Solver) forwardBFS(bfsQueue []queueValue, depth int) bool {
 	}
 	log.Printf("forwardBFS: depth [%d]\n", depth)
 
+	forwardMoves := map[string][24]int{
+		MoveR:      RMoveIndexes,
+		MoveR2:     R2MoveIndexes,
+		MoveRPrime: RPrimeMoveIndexes,
+		MoveU:      UMoveIndexes,
+		MoveU2:     U2MoveIndexes,
+		MoveUPrime: UPrimeMoveIndexes,
+		MoveF:      FMoveIndexes,
+		MoveF2:     F2MoveIndexes,
+		MoveFPrime: FPrimeMoveIndexes}
+
 	// Test: predict capacity: len(bfsQueue)*9
 	newQueue := make([]queueValue, 0, len(bfsQueue)*9)
 	for _, value := range bfsQueue {
@@ -117,6 +106,17 @@ func (s *Solver) backwardBFS(bfsQueue []queueValue, depth int) error {
 		return ErrInvalidCube
 	}
 	log.Printf("backwardBFS: depth [%d]\n", depth)
+
+	backwardMoves := map[string][24]int{
+		MoveR:      RPrimeMoveIndexes,
+		MoveR2:     R2MoveIndexes,
+		MoveRPrime: RMoveIndexes,
+		MoveU:      UPrimeMoveIndexes,
+		MoveU2:     U2MoveIndexes,
+		MoveUPrime: UMoveIndexes,
+		MoveF:      FPrimeMoveIndexes,
+		MoveF2:     F2MoveIndexes,
+		MoveFPrime: FMoveIndexes}
 
 	newQueue := make([]queueValue, 0, len(bfsQueue)*9)
 	for _, value := range bfsQueue {

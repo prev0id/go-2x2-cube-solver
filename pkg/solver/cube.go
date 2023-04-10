@@ -9,10 +9,10 @@ type Cube struct {
 	stickers [24]Sticker
 }
 
-func New() Cube {
+func NewEmptyCube() Cube {
 	stickers := [24]Sticker{}
 	for idx, _ := range stickers {
-		stickers[idx] = 255
+		stickers[idx] = -1
 	}
 	return Cube{stickers: stickers}
 }
@@ -43,6 +43,17 @@ func (c *Cube) IsSolved() bool {
 }
 
 func (c *Cube) ApplyAlgorithm(algorithm []string) (Cube, error) {
+	cubeMoves := map[string][24]int{
+		MoveR:      RMoveIndexes,
+		MoveR2:     R2MoveIndexes,
+		MoveRPrime: RPrimeMoveIndexes,
+		MoveU:      UMoveIndexes,
+		MoveU2:     U2MoveIndexes,
+		MoveUPrime: UPrimeMoveIndexes,
+		MoveF:      FMoveIndexes,
+		MoveF2:     F2MoveIndexes,
+		MoveFPrime: FPrimeMoveIndexes}
+
 	resultCube := *c
 	for _, moveName := range algorithm {
 		moveIndexes, isExist := cubeMoves[moveName]
@@ -67,6 +78,10 @@ func (c *Cube) ScrambleThis(scrambleLength int) []string {
 	}
 	*c, _ = c.ApplyAlgorithm(scrambleAlgorithm)
 	return scrambleAlgorithm
+}
+
+func (c *Cube) IsValid() bool {
+	return true
 }
 
 //for _, moveName := range algorithm {
