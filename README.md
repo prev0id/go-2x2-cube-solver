@@ -1,8 +1,6 @@
 <p align="center">
-  <img src="./assets/app-logo.png" width="350" alt="accessibility text">
+  <img src="./assets/app-logo.png" alt="cube-logo">
 </p>
-
-[//]: # (![cube logo]&#40;./assets/app-logo.png&#41;)
 
 # Fast and simple 2x2x2 Rubik's solver with basic UI
 A 2x2x2 cube solver written in Go to find the optimal solution. The solution requires only moves of R, U and F faces.
