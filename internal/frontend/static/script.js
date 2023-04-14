@@ -24,7 +24,7 @@ colorsIndexes = {};
 const colorButtons = document.getElementsByName("colorSelection");
 console.log(colorButtons)
 for (let index = 0; index < colorButtons.length; index++) {
-    color = getComputedStyle(colorButtons[index]).backgroundColor;
+    let color = getComputedStyle(colorButtons[index]).backgroundColor;
     colorsIndexes[color] = index
 }
 console.log(colorsIndexes)
@@ -37,7 +37,7 @@ console.log(currentStickers);
 const stickers = document.getElementsByClassName("sticker");
 for (let index = 0; index < stickers.length; index++) {
     stickers[index].addEventListener('click', function() {
-        const selectedButton = document.querySelector('input[name="colorSelection"]:checked');
+        const selectedButton = document.querySelector('input[class="color-selection"]:checked');
         const newColor = getComputedStyle(selectedButton).backgroundColor;
         stickers[index].style.backgroundColor = newColor;
         currentStickers[index] = colorsIndexes[newColor];

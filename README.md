@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="./assets/app-logo.png" width="350" alt="accessibility text">
+</p>
+
+[//]: # (![cube logo]&#40;./assets/app-logo.png&#41;)
+
 # Fast and simple 2x2x2 Rubik's solver with basic UI
 A 2x2x2 cube solver written in Go to find the optimal solution. The solution requires only moves of R, U and F faces.
 
@@ -5,7 +11,8 @@ A 2x2x2 cube solver written in Go to find the optimal solution. The solution req
 ```shell
 make run
 ```
-after open in any browser http://localhost:8000/
+after open in any browser http://localhost:8080/
+(you can change port or host in .env)
 
 ## Screenshots
 

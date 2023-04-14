@@ -2,7 +2,7 @@ package backend
 
 import (
 	"encoding/json"
-	"go-2x2-solver/pkg/solver"
+	"go-2x2-solver/pkg/cube"
 	"io"
 	"log"
 	"net/http"
@@ -10,7 +10,7 @@ import (
 
 type Server struct{}
 type requestData struct {
-	Cube [24]solver.Sticker `json:"cube"`
+	Cube cube.Cube `json:"cube"`
 }
 
 func Handler(server Server) http.HandlerFunc {
@@ -43,9 +43,8 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// set up cube
-	cube := solver.NewEmptyCube()
-	cube.SetStickers(unmarshalled.Cube)
-	if !cube.IsValid() {
+
+	if !unmarshalled.Cube.IsValid() {
 		//log.Printf("Non-valid cube [%v]\n", cube)
 		_, err := writer.Write([]byte("Your cube is non-valid, try again"))
 		if err != nil {
