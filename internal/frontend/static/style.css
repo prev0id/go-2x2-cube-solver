@@ -9,9 +9,17 @@ body {
     font-size: 20px;
 }
 
+button, input[type=radio]{
+    transition: 0.2s all linear;
+}
+
+button:hover, input[type=radio]:hover{
+    transform: translate(0,-0.3rem);
+    box-shadow: 0 1rem 4rem rgba(0,0,0,.50);
+}
+
 fieldset {
     border: 0 solid black;
-    /* border-radius: 10px; */
     width: 100%;
     height: 100%;
 }
@@ -19,103 +27,51 @@ fieldset {
 legend {
     background-color: black;
     color: white;
-    padding: 10px 10px;
-    margin-left: 5%;
+    /*background: white;*/
+    /*color: black;*/
+    /*border: black solid 2px;*/
+
+    padding: 1ex 1ex;
+    margin-left: auto;
+    transform: translate(0,-2rem);
+    font-size: 30px;
+    /*box-shadow: 0 1rem 4rem rgba(0,0,0,.50);*/
 }
 
-#title {
-    text-align: center;
-    height: 10vh;
-}
+.header { text-align: center; }
 
-.app-grid {    
-    display: grid;
-    grid-template-columns: 7fr 3fr;
-    grid-template-rows: 10fr 3fr 1fr;
-
-    place-content: stretch;
-
-    /* border: 2px solid black; */
-    width: 100vw;
-    height: 90vh;
-}
-
-.cube-box {
-    grid-area: 1 / 1 / 2 / 2;
-
-    width: 100%;
-    height: 100%;
-
+.main {
     display: flex;
     justify-content: center;
     align-content: center;
+    height: 90vh;
 }
 
-.color-buttons {
-    grid-area: 2 / 1 / 3 / 2;
-}
-.solution {
-    grid-area: 1 / 2 / 2/ 3;
-}
-.solve-me-button {
-    grid-area: 2 / 2 / 3 / 3;
-    display: flex;
-    justify-content: space-around;
-}
-.credits {
-    grid-area: 3 / 1 / 4 / 3;
-    display: flex;
-    justify-content: right;
-    align-items: center;
-    gap: 2ex;
-    padding-right: 10px;
+.layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    height: 100%;
+    aspect-ratio: 3 / 2;
 }
 
+.cube-wrapper {
+    grid-area: 1 / 1 / 4 / 3;
 
-.cube {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 2%;
 }
 
-.face-U {
-    grid-row: 1 / 2;
-    grid-column: 2 / 3;
-}
-
-.face-L {
-    grid-row: 2 / 3;
-    grid-column: 1 / 2;
-}
-
-.face-F {
-    grid-row: 2 / 3;
-    grid-column: 2 / 3;
-}
-
-.face-R {
-    grid-row: 2 / 3;
-    grid-column: 3 / 4;
-}
-
-.face-B {
-    grid-row: 2 / 3;
-    grid-column: 4 / 5;
-}
-
-.face-D {
-    grid-row: 3 / 4;
-    grid-column: 2 / 3;
-}
+.face-U { grid-area: 1 / 2 / 2 / 3; }
+.face-L { grid-area: 2 / 1 / 3 / 2; }
+.face-F { grid-area: 2 / 2 / 3 / 3; }
+.face-R { grid-area: 2 / 3 / 3 / 4; }
+.face-B { grid-area: 2 / 4 / 3 / 5; }
+.face-D { grid-area: 3 / 2 / 4 / 3; }
 
 .cube-face {
-    /* box-shadow:
-            0 0 4rem rgba(0,0,0,.25),
-            inset 0 0 10rem rgba(0,0,0,.25); */
-
-
-    /* background-color: transparent; */
     background-color: rgba(0, 0, 0, 0.14);
     border: 2px solid rgba(0, 0, 0, 0.001);
     border-radius: 3%;
@@ -125,53 +81,45 @@ legend {
     grid-template-rows: 1fr 1fr;
 
     gap: 1%;
-
-    align-items: stretch;
-    justify-items: stretch;
 }
 
 .sticker {
-    background-color:lightsteelblue;
+    background-color: lightsteelblue;
     border-radius: 5%;
     border-width: 0;
     width: 100%;
     height: 100%;
 }
 
-
-.color-selection {
-    appearance: none;
-    
-    border-radius: 10%;
-    height: 100%;
-    aspect-ratio: 1 / 1;
-    transition: 0.2s all linear;
-    margin-right: 5px;
-  
-    position: relative;
-    top: 4px;
-
-    box-shadow: 0 1rem 4rem rgba(0,0,0,.25);
+.color-wrapper {
+    grid-area: 4 / 1 / 5 / 4;
 }
-
-.color-selection:hover {
-    transform: translate(0,-0.3rem);
-    box-shadow: 0 1rem 4rem rgba(0,0,0,.50);
-}
-
-
-.color-selection:checked {
-    border: 6px solid black;
-}
-
 .radio-grid {
     width: 100%;
     height: 100%;
-
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     justify-items: center;
     align-items: center;
+}
+
+.radio-grid input[type=radio] {
+    appearance: none;
+    border-radius: 10%;
+    height: 90%;
+    aspect-ratio: 1 / 1;
+    transition: 0.2s all linear;
+    margin-right: 5px;
+    box-shadow: 0 1rem 4rem rgba(0,0,0,.25);
+}
+
+.radio-grid input[type=radio]:hover {
+    transform: translate(0,-0.3rem);
+    box-shadow: 0 1rem 4rem rgba(0,0,0,.50);
+}
+
+.radio-grid input[type=radio]:checked {
+    border: 6px solid black;
 }
 
 #button-yellow { background-color: #cfff04; }
@@ -181,63 +129,57 @@ legend {
 #button-orange { background-color: orange; }
 #button-white { background-color: white; }
 
-#solve-me-button {
+.solution-wrapper {
+    grid-area: 2 / 3 / 3 / 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.solution-wrapper p {
+    font-size: 25px;
+    padding: 1ex 1ex;
+    border: solid black 2px;
+}
+
+
+.solve-wrapper {
+    grid-area: 1 / 3 / 2 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.solve-wrapper button {
     color: white;
     background-color: black;
     padding: 1ex 1ex;
-    border-radius: 0;
     border: 0;
     font-size: 30px;
-    align-self: center;
-    justify-self: center;
-
     transition: 0.2s all linear;
     box-shadow: 0 1rem 4rem rgba(0,0,0,.25);
+    height: 2em;
 }
 
-button {
-    transition: 0.2s all linear;
-    /* box-shadow: 0 1rem 4rem rgba(0,0,0,.25); */
-}
-
-button:hover {
-  /* color: #999; */
-  transform: translate(0,-0.3rem);
-  box-shadow: 0 1rem 4rem rgba(0,0,0,.50);
-}
-
-
-#solve-me-button:active {
+.solve-wrapper button:active {
     background-color: white;
     color: black;
     outline: 1px solid black;
 }
 
-#solution-label {
-    background-color: black;
-    color: white;
-    padding: 1rem 1rem;
-    margin-left: calc(50% - 7rem);
+.footer {
+    display: flex;
+    justify-content: right;
+    padding-right: 2rem;
 }
 
-#solution {
-    display: block;
-    margin: 2em 0;
-    text-align: center;
+.footer div {
+    display: flex;
+    gap: 1ex;
+    align-items: center;
 }
 
 #github-logo {
     aspect-ratio: 1 / 1;
     height: 2ex;
-}
-
-#telegram-logo {
-    aspect-ratio: 1 / 1;
-    height: 2ex;
-}
-
-.logo-text {
-    display: flex;
-    gap: 1ex;
-    align-items: center;
 }

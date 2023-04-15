@@ -1,7 +1,6 @@
 .idea
 .git
-build/bin
-web/app.wasm
+./assets
 3x3
 
 *.pixil

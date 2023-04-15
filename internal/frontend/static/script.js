@@ -1,21 +1,3 @@
-function setCubeSize() {
-    const aspectRatio = 4 / 3;
-    
-    const box = document.getElementById("cube-box");
-    const boxWidth = box.offsetWidth;   
-    const boxHeight = box.offsetHeight;
-    
-    const cubeSideSize = boxWidth/boxHeight > aspectRatio ? boxHeight/3 : boxWidth/4;
-
-    const cube = document.getElementById("cube");
-    cube.style.width  = Math.floor(cubeSideSize * 4).toString() + "px";
-    cube.style.height = Math.floor(cubeSideSize * 3).toString() + "px";
-}
-
-setCubeSize();
-window.onresize = setCubeSize;
-
-
 const TOTAL_STICKERS = 24;
 // const TOTAL_COLORS = 6;
 
@@ -37,7 +19,7 @@ console.log(currentStickers);
 const stickers = document.getElementsByClassName("sticker");
 for (let index = 0; index < stickers.length; index++) {
     stickers[index].addEventListener('click', function() {
-        const selectedButton = document.querySelector('input[class="color-selection"]:checked');
+        const selectedButton = document.querySelector('input[name="colorSelection"]:checked');
         const newColor = getComputedStyle(selectedButton).backgroundColor;
         stickers[index].style.backgroundColor = newColor;
         currentStickers[index] = colorsIndexes[newColor];
@@ -61,7 +43,7 @@ for (let index = 0; index < stickers.length; index++) {
 
 const solution = document.getElementById("solution")
 
-const solveButton = document.getElementById("solve-me-button");
+const solveButton = document.getElementById("solve-button");
 solveButton.addEventListener('click', function() {
     console.log(currentStickers);
 
