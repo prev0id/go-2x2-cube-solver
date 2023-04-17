@@ -21,7 +21,7 @@ func main() {
 	fs := http.FileServer(http.Dir("internal/frontend/static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	if err := http.ListenAndServe(os.Getenv("PORT"), nil); err != nil {
+	if err := http.ListenAndServe(":"+os.Getenv("PORT"), nil); err != nil {
 		log.Fatal(err.Error())
 	}
 }

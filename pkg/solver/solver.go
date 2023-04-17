@@ -3,7 +3,6 @@ package solver
 import (
 	"errors"
 	"go-2x2-solver/pkg/cube"
-	"log"
 )
 
 const (
@@ -30,19 +29,19 @@ func (s *Solver) Solve(c cube.Cube) ([]string, error) {
 	// forward bfs
 	s.forwardMemory = make(map[cube.Cube][]string)
 	s.forwardMemory[c] = nil
-	queue := make([]queueValue, 0, 1)
-	queue = append(queue, queueValue{cube: c, algorithm: nil})
-	resultForward := s.forwardBFS(queue, 1)
+	forwardQueue := make([]queueValue, 0, 1)
+	forwardQueue = append(forwardQueue, queueValue{cube: c, algorithm: nil})
+	resultForward := s.forwardBFS(forwardQueue, 1)
 
 	// backward bfs
 	if !resultForward {
 		s.backwardMemory = make(map[cube.Cube][]string)
-		queue := make([]queueValue, 0, 24)
+		backwardQueue := make([]queueValue, 0, 24)
 		for _, solvedCube := range cube.SolvedCubes {
 			s.backwardMemory[solvedCube] = nil
-			queue = append(queue, queueValue{cube: c, algorithm: nil})
+			backwardQueue = append(backwardQueue, queueValue{cube: solvedCube, algorithm: nil})
 		}
-		if err := s.backwardBFS(queue, 1); err != nil {
+		if err := s.backwardBFS(backwardQueue, 1); err != nil {
 			return nil, err
 		}
 	}
@@ -53,7 +52,6 @@ func (s *Solver) forwardBFS(bfsQueue []queueValue, depth int) bool {
 	if depth > forwardMaxDepth {
 		return false
 	}
-	log.Printf("forwardBFS: depth [%d]\n", depth)
 
 	forwardMoves := map[string]cube.Move{
 		"R":  cube.MoveR,
@@ -67,8 +65,8 @@ func (s *Solver) forwardBFS(bfsQueue []queueValue, depth int) bool {
 		"F'": cube.MoveFPrime,
 	}
 
-	// Test: predict capacity: len(bfsQueue)*9
-	newQueue := make([]queueValue, 0, len(bfsQueue)*9)
+	// capacity will increase ~6 times
+	newQueue := make([]queueValue, 0, len(bfsQueue)*6)
 	for _, value := range bfsQueue {
 		prevCube, prevAlgorithm := value.cube, value.algorithm
 		for moveName, move := range forwardMoves {
@@ -93,7 +91,6 @@ func (s *Solver) backwardBFS(bfsQueue []queueValue, depth int) error {
 	if depth > backwardMaxDepth {
 		return errors.New("unsolvable cube")
 	}
-	log.Printf("backwardBFS: depth [%d]\n", depth)
 
 	backwardMoves := map[string]cube.Move{
 		"R":  cube.MoveRPrime,
@@ -107,7 +104,9 @@ func (s *Solver) backwardBFS(bfsQueue []queueValue, depth int) error {
 		"F'": cube.MoveF,
 	}
 
-	newQueue := make([]queueValue, 0, len(bfsQueue)*9)
+	// capacity will increase ~6 times
+	newQueue := make([]queueValue, 0, len(bfsQueue)*6)
+
 	for _, value := range bfsQueue {
 		prevCube, prevAlgorithm := value.cube, value.algorithm
 		for moveName, move := range backwardMoves {
@@ -120,7 +119,7 @@ func (s *Solver) backwardBFS(bfsQueue []queueValue, depth int) error {
 				s.resultAlgorithm = append(s.resultAlgorithm, backwardAlgorithm...)
 				return nil
 			}
-			if _, isExist := s.forwardMemory[newCube]; !isExist {
+			if _, isExist := s.backwardMemory[newCube]; !isExist {
 				// deep copy of algorithm slice
 				newAlgorithm := makeNewAlgorithm(prevAlgorithm, moveName)
 				// updating memory and queue
