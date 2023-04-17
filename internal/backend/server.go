@@ -3,9 +3,12 @@ package backend
 import (
 	"encoding/json"
 	"go-2x2-solver/pkg/cube"
+	"go-2x2-solver/pkg/solver"
 	"io"
 	"log"
 	"net/http"
+	"strings"
+	"time"
 )
 
 type Server struct{}
@@ -43,7 +46,6 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// set up cube
-
 	if !unmarshalled.Cube.IsValid() {
 		//log.Printf("Non-valid cube [%v]\n", cube)
 		_, err := writer.Write([]byte("Your cube is non-valid, try again"))
@@ -57,7 +59,19 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// solve
-	solution := "This is your solution:\nR U R' F\n"
+	cubeSolver := solver.Solver{}
+
+	startClock := time.Now()
+	algorithm, err := cubeSolver.Solve(unmarshalled.Cube)
+	endClock := time.Now()
+	log.Printf("Solved in %d ms", endClock.Sub(startClock).Milliseconds())
+
+	solution := ""
+	if err != nil {
+		solution = err.Error()
+	} else {
+		solution = strings.Join(algorithm, " ")
+	}
 
 	if _, err := writer.Write([]byte(solution)); err != nil {
 		log.Printf("Error while writing response [%s]", err.Error())

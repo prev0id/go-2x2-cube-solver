@@ -38,7 +38,12 @@ legend {
     /*box-shadow: 0 1rem 4rem rgba(0,0,0,.50);*/
 }
 
-.header { text-align: center; }
+h1 { font-weight: initial; }
+
+.header {
+    height: 3rem;
+    text-align: center;
+}
 
 .main {
     display: flex;
@@ -75,11 +80,9 @@ legend {
     background-color: rgba(0, 0, 0, 0.14);
     border: 2px solid rgba(0, 0, 0, 0.001);
     border-radius: 3%;
-
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-
     gap: 1%;
 }
 
