@@ -11,9 +11,8 @@ A 2x2x2 cube solver written in Go to find the optimal solution. The solution req
     $ go run cmd/main.go
 
 after open in any browser http://localhost:8080/
-(you can change port or host in .env)
 
-### Screenshots
+### Screenshot
 ![screenshot of app](examples/solved.png)
 
 ### Algorithm explanation
@@ -25,4 +24,4 @@ The second BFS significantly reduce the calculations required to find a solution
 
 
 ### Packages used
-* [godotenv](https://github.com/joho/godotenv)
+* [GoDotEnv](https://github.com/joho/godotenv)

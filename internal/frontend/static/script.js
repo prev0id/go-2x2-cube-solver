@@ -1,5 +1,4 @@
 const TOTAL_STICKERS = 24;
-// const TOTAL_COLORS = 6;
 
 // get info about all current colors
 colorsIndexes = {};
@@ -21,8 +20,8 @@ for (let index = 0; index < stickers.length; index++) {
     };
 }
 
+// Post request for solution
 const solution = document.getElementById("solution")
-
 const solveButton = document.getElementById("solve-button");
 solveButton.onclick = function() {
     console.log(currentStickers);
