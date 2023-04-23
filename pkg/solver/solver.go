@@ -2,18 +2,26 @@
 package solver
 
 import (
-	"errors"
 	"go-2x2-solver/pkg/cube"
 )
 
-func NewSolver() *Solver {
-	return &Solver{}
+type solver struct {
+	allMoves []cube.Move
+
+	forwardMemory   map[cube.Cube]Algorithm
+	forwardQueue    []queueValue
+	forwardSolution Algorithm
+
+	backwardMemory   map[cube.Cube]Algorithm
+	backwardQueue    []queueValue
+	backwardSolution Algorithm
 }
 
-type Solver struct {
-	forwardMemory   map[cube.Cube][]string
-	backwardMemory  map[cube.Cube][]string
-	resultAlgorithm []string
+type Algorithm = []cube.Move
+
+type queueValue struct {
+	cube      cube.Cube
+	algorithm Algorithm
 }
 
 const (
@@ -21,132 +29,89 @@ const (
 	backwardMaxDepth = 5
 )
 
-type queueValue struct {
-	cube      cube.Cube
-	algorithm []string
-}
-
-func (s *Solver) Solve(c cube.Cube) ([]string, error) {
-	if c.IsSolved() {
-		return nil, nil
-	}
-
-	// forward bfs
-	s.forwardMemory = make(map[cube.Cube][]string)
-	s.forwardMemory[c] = nil
-	forwardQueue := make([]queueValue, 0, 1)
-	forwardQueue = append(forwardQueue, queueValue{cube: c, algorithm: nil})
-	resultForward := s.forwardBFS(forwardQueue, 1)
-
-	// backward bfs
-	if !resultForward {
-		s.backwardMemory = make(map[cube.Cube][]string)
-		backwardQueue := make([]queueValue, 0, 24)
-		for _, solvedCube := range cube.GetSolvedCubes() {
-			s.backwardMemory[solvedCube] = nil
-			backwardQueue = append(backwardQueue, queueValue{cube: solvedCube, algorithm: nil})
-		}
-		if err := s.backwardBFS(backwardQueue, 1); err != nil {
-			return nil, err
-		}
-	}
-	return s.resultAlgorithm, nil
-}
-
-func (s *Solver) forwardBFS(bfsQueue []queueValue, depth int) bool {
+func (s *solver) forwardBFS(depth int) bool {
 	if depth > forwardMaxDepth {
 		return false
 	}
 
-	forwardMoves := map[string]cube.Move{
-		"R":  cube.R,
-		"R2": cube.R2,
-		"R'": cube.RPrime,
-		"U":  cube.U,
-		"U2": cube.U2,
-		"U'": cube.UPrime,
-		"F":  cube.F,
-		"F2": cube.F2,
-		"F'": cube.FPrime,
-	}
-
 	// capacity will increase ~6 times
-	newQueue := make([]queueValue, 0, len(bfsQueue)*6)
+	newQueue := make([]queueValue, 0, len(s.forwardQueue)*6)
 
-	for _, value := range bfsQueue {
+	for _, value := range s.forwardQueue {
 		prevCube, prevAlgorithm := value.cube, value.algorithm
-		for moveName, move := range forwardMoves {
+		for _, move := range s.allMoves {
 			newCube := cube.MakeMove(prevCube, move)
 			if _, isExist := s.forwardMemory[newCube]; !isExist {
 				if newCube.IsSolved() {
-					s.resultAlgorithm = makeNewAlgorithm(prevAlgorithm, moveName)
+					s.forwardSolution = makeNewAlgorithm(prevAlgorithm, move)
 					return true
 				}
 
-				newAlgorithm := makeNewAlgorithm(prevAlgorithm, moveName)
+				newAlgorithm := makeNewAlgorithm(prevAlgorithm, move)
 				s.forwardMemory[newCube] = newAlgorithm
 				newQueue = append(newQueue, queueValue{newCube, newAlgorithm})
 			}
 		}
 	}
-	return s.forwardBFS(newQueue, depth+1)
+	s.forwardQueue = newQueue
+	return s.forwardBFS(depth + 1)
 }
 
-func (s *Solver) backwardBFS(bfsQueue []queueValue, depth int) error {
+func (s *solver) backwardBFS(depth int) bool {
 	if depth > backwardMaxDepth {
-		return errors.New("unsolvable cube")
+		return false
 	}
-
-	backwardMoves := map[string]cube.Move{
-		"R":  cube.RPrime,
-		"R2": cube.R2,
-		"R'": cube.R,
-		"U":  cube.UPrime,
-		"U2": cube.U2,
-		"U'": cube.U,
-		"F":  cube.FPrime,
-		"F2": cube.F2,
-		"F'": cube.F,
-	}
-
 	// capacity will increase ~6 times
-	newQueue := make([]queueValue, 0, len(bfsQueue)*6)
+	newQueue := make([]queueValue, 0, len(s.backwardQueue)*6)
 
-	for _, value := range bfsQueue {
+	for _, value := range s.backwardQueue {
 		prevCube, prevAlgorithm := value.cube, value.algorithm
-		for moveName, move := range backwardMoves {
+		for _, move := range s.allMoves {
 			newCube := cube.MakeMove(prevCube, move)
 
 			if _, isExist := s.forwardMemory[newCube]; isExist {
-				// constructing a solution using an extension of the forward algorithm
-				// with a reverse backward algorithm
-				s.resultAlgorithm = s.forwardMemory[newCube]
-				backwardAlgorithm := makeNewAlgorithm(prevAlgorithm, moveName)
-				reverseSlice(backwardAlgorithm)
-				s.resultAlgorithm = append(s.resultAlgorithm, backwardAlgorithm...)
-				return nil
+				s.forwardSolution = s.forwardMemory[newCube]
+				s.backwardSolution = makeNewAlgorithm(prevAlgorithm, move)
+				return true
 			}
 
 			if _, isExist := s.backwardMemory[newCube]; !isExist {
-				newAlgorithm := makeNewAlgorithm(prevAlgorithm, moveName)
+				newAlgorithm := makeNewAlgorithm(prevAlgorithm, move)
 				s.backwardMemory[newCube] = newAlgorithm
 				newQueue = append(newQueue, queueValue{newCube, newAlgorithm})
 			}
 		}
 	}
-	return s.backwardBFS(newQueue, depth+1)
+	s.backwardQueue = newQueue
+	return s.backwardBFS(depth + 1)
 }
 
-// makeNewAlgorithm appends moveName to deep copy of algorithm
-func makeNewAlgorithm(algorithm []string, moveName string) []string {
-	newAlgorithm := make([]string, 0, len(algorithm)+1)
-	newAlgorithm = append(newAlgorithm, algorithm...)
-	newAlgorithm = append(newAlgorithm, moveName)
-	return newAlgorithm
-}
+// calcAlgorithm constructing from solutions of forward and backwards BFS's final algorithm
+func (s *solver) calcAlgorithm() Algorithm {
+	result := make(Algorithm, 0, len(s.backwardSolution)+len(s.forwardSolution))
+	result = append(result, s.forwardSolution...)
 
-func reverseSlice(slice []string) {
-	for i, j := 0, len(slice)-1; i < j; i, j = i+1, j-1 {
-		slice[i], slice[j] = slice[j], slice[i]
+	reverseThisMove := map[cube.Move]cube.Move{
+		cube.R:      cube.RPrime,
+		cube.R2:     cube.R2,
+		cube.RPrime: cube.R,
+		cube.U:      cube.UPrime,
+		cube.U2:     cube.U2,
+		cube.UPrime: cube.U,
+		cube.F:      cube.FPrime,
+		cube.F2:     cube.F2,
+		cube.FPrime: cube.F,
 	}
+	for idx := len(s.backwardSolution) - 1; idx >= 0; idx-- {
+		result = append(result, reverseThisMove[s.backwardSolution[idx]])
+	}
+	return result
+}
+
+// makeNewAlgorithm appends move to deep copy of algorithm
+func makeNewAlgorithm(algorithm Algorithm, move cube.Move) Algorithm {
+	newAlgorithm := make([]cube.Move, 0, len(algorithm)+1)
+	newAlgorithm = append(newAlgorithm, algorithm...)
+	newAlgorithm = append(newAlgorithm, move)
+	return newAlgorithm
 }

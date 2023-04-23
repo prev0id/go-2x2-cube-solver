@@ -7,9 +7,7 @@
 A 2x2x2 cube solver written in Go to find the optimal solution. The solution requires only moves of R, U and F faces.
 
 ### Run
-
-    $ go run cmd/main.go
-
+    $ make run
 after open in any browser http://localhost:8080/
 
 ### Screenshot
@@ -23,5 +21,13 @@ Only the moves R, R2, R', U, U2, U', F, F2, F' are used. With such a set of allo
 The second BFS significantly reduce the calculations required to find a solution by decreasing 'breadth' of the first BFS.
 
 
+### Tests
+To run tests:
+
+    $ make test
+
+You can adjust the number of batches which will be running simultaneously (BATCHES), their size (BATCHES_SIZE) and scramble length (SCRAMBLE_LENGTH)
+
 ### Packages used
 * [GoDotEnv](https://github.com/joho/godotenv)
+* [Testify](https://github.com/stretchr/testify)

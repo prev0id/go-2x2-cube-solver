@@ -38,6 +38,7 @@ func getRandomFromSlice[Type any](slice []Type) Type {
 	return slice[rand.Intn(len(slice))]
 }
 
+// moves matches the movement to the change of the sticker indexes in the cube
 var moves = [][]int{
 	R:      {0, 9, 2, 11, 4, 5, 6, 7, 8, 21, 10, 23, 14, 12, 15, 13, 3, 17, 1, 19, 20, 18, 22, 16},
 	R2:     {0, 21, 2, 23, 4, 5, 6, 7, 8, 18, 10, 16, 15, 14, 13, 12, 11, 17, 9, 19, 20, 1, 22, 3},

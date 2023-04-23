@@ -59,21 +59,12 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 	}
 
 	// solve
-	cubeSolver := solver.Solver{}
-
 	startClock := time.Now()
-	algorithm, err := cubeSolver.Solve(unmarshalled.Cube)
+	algorithm, success := solver.Solve(unmarshalled.Cube)
 	endClock := time.Now()
 	log.Printf("Solved in %d ms", endClock.Sub(startClock).Milliseconds())
 
-	solution := ""
-	if err != nil {
-		solution = err.Error()
-	} else {
-		solution = strings.Join(algorithm, " ")
-	}
-
-	if _, err := writer.Write([]byte(solution)); err != nil {
+	if _, err := writer.Write(makeResponseBody(algorithm, success)); err != nil {
 		log.Printf("Error while writing response [%s]", err.Error())
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
@@ -82,4 +73,28 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 
 func (s *Server) Read(writer http.ResponseWriter, request *http.Request) {
 	http.ServeFile(writer, request, "./internal/frontend/index.html")
+}
+
+func makeResponseBody(algorithm solver.Algorithm, success error) []byte {
+	if success != nil {
+		return []byte("cube is unsolvable, check stickers")
+	}
+	moveToString := []string{
+		cube.R:      "R",
+		cube.R2:     "R2",
+		cube.RPrime: "R'",
+		cube.F:      "F",
+		cube.F2:     "F2",
+		cube.FPrime: "F'",
+		cube.U:      "U",
+		cube.U2:     "U2",
+		cube.UPrime: "U'",
+	}
+
+	var resultBuilder strings.Builder
+	for _, move := range algorithm {
+		resultBuilder.WriteString(moveToString[move])
+		resultBuilder.WriteRune(' ')
+	}
+	return []byte(resultBuilder.String())
 }
