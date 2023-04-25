@@ -45,19 +45,6 @@ func (s *Server) Create(writer http.ResponseWriter, request *http.Request) {
 		return
 	}
 
-	// set up cube
-	if !unmarshalled.Cube.IsValid() {
-		//log.Printf("Non-valid cube [%v]\n", cube)
-		_, err := writer.Write([]byte("Your cube is non-valid, try again"))
-		if err != nil {
-			log.Printf("Error while writing response [%s]", err.Error())
-			writer.WriteHeader(http.StatusInternalServerError)
-			return
-		}
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
 	// solve
 	startClock := time.Now()
 	algorithm, success := solver.Solve(unmarshalled.Cube)
@@ -77,7 +64,7 @@ func (s *Server) Read(writer http.ResponseWriter, request *http.Request) {
 
 func makeResponseBody(algorithm solver.Algorithm, success error) []byte {
 	if success != nil {
-		return []byte("cube is unsolvable, check stickers")
+		return []byte("The cube is unsolvable, check the stickers")
 	}
 	moveToString := []string{
 		cube.R:      "R",

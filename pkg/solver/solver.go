@@ -110,8 +110,8 @@ func (s *solver) calcAlgorithm() Algorithm {
 
 // makeNewAlgorithm appends move to deep copy of algorithm
 func makeNewAlgorithm(algorithm Algorithm, move cube.Move) Algorithm {
-	newAlgorithm := make([]cube.Move, 0, len(algorithm)+1)
-	newAlgorithm = append(newAlgorithm, algorithm...)
+	newAlgorithm := make([]cube.Move, len(algorithm), len(algorithm)+1)
+	copy(newAlgorithm, algorithm)
 	newAlgorithm = append(newAlgorithm, move)
 	return newAlgorithm
 }

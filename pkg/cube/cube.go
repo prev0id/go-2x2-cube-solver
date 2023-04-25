@@ -26,11 +26,6 @@ func (c *Cube) IsSolved() bool {
 	return isExist
 }
 
-// IsValid primitive validation, not all impossible states can be detected
-func (c *Cube) IsValid() bool {
-	return true
-}
-
 // GetSolvedCubes returns slice of all rotations of the solved cube
 func GetSolvedCubes() []Cube {
 	cubes := make([]Cube, 0, len(solvedCubes))
